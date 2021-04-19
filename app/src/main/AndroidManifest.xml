@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sweetapp">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
+
+
+
+        android:theme="@style/Theme.SweetApp">
+        <activity android:name=".Activity.DetailsChaletOwnerActivity"></activity>
+        <activity android:name=".Activity.EditChaletActivity" />
+        <activity
+            android:name=".Activity.PopUpWindowChalet"
+            android:theme="@style/Theme.SweetApp.PopMe">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.AddChaletActivity" />
+        <activity android:name=".Activity.NewPhoneNumberActivity" />
+        <activity android:name=".Activity.ChaletListActivity" />
+
+        <activity android:name=".Activity.ForgetPasswordActivity" />
+        <activity android:name=".Activity.TenantMainActivity" />
+        <activity android:name=".Activity.ForgetEmailActivity" />
+        <activity android:name=".Activity.ChaletOwnerMainActivity" />
+        <activity android:name=".Activity.TenantLoginActivity" />
+        <activity android:name=".Activity.ChalatOwnetLoginActivity" />
+        <activity android:name=".Activity.ChaletOwnerSingupActivity" />
+        <activity android:name=".Activity.TenantSingUpOrLoginActivity" />
+        <activity android:name=".Activity.ChaletOwnerSingUpOrLoginActivity" />
+        <activity android:name=".Activity.ChooseTypeActivity" />
+        <activity android:name=".Activity.TenantSingUpActivity" />
+        <activity android:name=".Activity.SplashActivity" />
+        <activity android:name=".Activity.MainActivity" />
+    </application>
+
+</manifest>
