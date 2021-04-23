@@ -92,6 +92,10 @@ public class ChaletOwnerSingupActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Uid = mAuth.getCurrentUser().getUid();
+                    Intent idIntent = new Intent(ChaletOwnerSingupActivity.this, ChaletListActivity.class);
+                    Intent idaddIntent = new Intent(ChaletOwnerSingupActivity.this, AddChaletActivity.class);
+                    idIntent.putExtra("UId",Uid);
+                    idaddIntent.putExtra("UId",Uid);
                     finish();
                     HashMap userDetails =new HashMap();
                     userDetails.put("Uid",Uid);
@@ -100,7 +104,8 @@ public class ChaletOwnerSingupActivity extends AppCompatActivity {
                     userDetails.put("Email",Email);
                     userDetails.put("Password",Password);
                     rootRef.child("Users").child("Chalet Owner").child(Uid).child("Details").setValue(userDetails);
-                    startActivity(new Intent(ChaletOwnerSingupActivity.this, ChaletOwnerMainActivity.class));
+                    startActivity(new Intent(ChaletOwnerSingupActivity.this, ChaletOwnerMainActivity.class)
+                    );
 
 
                 } else {

@@ -50,7 +50,10 @@ public class ChaletOwnerMainActivity extends AppCompatActivity {
         Intent regIntent = new Intent(ChaletOwnerMainActivity.this, ChooseTypeActivity.class);
         startActivity(regIntent);
     }
-
+    private void sendUserToChaletList() {
+        Intent regIntent = new Intent(ChaletOwnerMainActivity.this, ChaletListActivity.class);
+        startActivity(regIntent);
+    }
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -66,7 +69,7 @@ public class ChaletOwnerMainActivity extends AppCompatActivity {
             case R.id.main_account_mangment:
                 break;
             case R.id.main_chalet_list:
-
+                sendUserToChaletList();
                 break;
             case R.id.main_order_list:
 

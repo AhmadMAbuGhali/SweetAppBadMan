@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
 import com.example.sweetapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,19 +35,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
+import java.util.Random;
 
 
 public class AddChaletActivity extends AppCompatActivity {
 
     Button Services;
-    private String saveCurrentDate, saveCurrentTime, NameChalet, Address, numberisPhone, salary, numOfHours, Services1, Services2, Services3, Services4, Services5, Services6, Services7, Services8, Services9;
+    private String saveCurrentDate, saveCurrentTime, NameChalet, Address, numberisPhone, salary, numOfHours,Uid, Services1, Services2, Services3, Services4, Services5, Services6, Services7, Services8, Services9;
     private static final int GalleryPick = 1;
     private Uri ImageUri;
     private String chaletRandomKey, downloadImageUrl;
     private StorageReference ProductImagesRef;
     private DatabaseReference ProductsRef;
     private ProgressDialog loadingBar;
+    FirebaseAuth mAuth;
+    AdapterIteamChaletList list;
+
+
 
     ImageView imgChalet;
     TextView txtServices1, txtServices2, txtServices3, txtServices4, txtServices5, txtServices6,
@@ -53,8 +59,8 @@ public class AddChaletActivity extends AppCompatActivity {
     EditText edNameChalet, edaddress, edsalary, ednumberisPhone, ednumOfHours;
     Button btn_add;
 
-    boolean swimming_pool_men, swimming_pool_small, stadium, wifi, billiard,
-            kitchen, garage, stereo, tennis_table;
+//    boolean swimming_pool_men, swimming_pool_small, stadium, wifi, billiard,
+//            kitchen, garage, stereo, tennis_table;
 
     String SwimmingPoolMen = "غير موجود",
             SwimmingPoolSmall = "غير موجود",
@@ -73,16 +79,19 @@ public class AddChaletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_chalet);
         Services = findViewById(R.id.Services);
+        mAuth = FirebaseAuth.getInstance();
 
-        swimming_pool_men = getIntent().getExtras().getBoolean("checkbox_swimming_pool_men");
-        swimming_pool_small = getIntent().getExtras().getBoolean("checkbox_swimming_pool_small");
-        stadium = getIntent().getExtras().getBoolean("checkbox_stadium");
-        wifi = getIntent().getExtras().getBoolean("checkbox_Wifi");
-        billiard = getIntent().getExtras().getBoolean("checkbox_billiard");
-        kitchen = getIntent().getExtras().getBoolean("checkbox_kitchen");
-        garage = getIntent().getExtras().getBoolean("checkbox_garage");
-        stereo = getIntent().getExtras().getBoolean("checkbox_stereo");
-        tennis_table = getIntent().getExtras().getBoolean("checkbox_tennis_table");
+
+//        list.setPid(Uid);
+//        swimming_pool_men = getIntent().getExtras().getBoolean("checkbox_swimming_pool_men");
+//        swimming_pool_small = getIntent().getExtras().getBoolean("checkbox_swimming_pool_small");
+//        stadium = getIntent().getExtras().getBoolean("checkbox_stadium");
+//        wifi = getIntent().getExtras().getBoolean("checkbox_Wifi");
+//        billiard = getIntent().getExtras().getBoolean("checkbox_billiard");
+//        kitchen = getIntent().getExtras().getBoolean("checkbox_kitchen");
+//        garage = getIntent().getExtras().getBoolean("checkbox_garage");
+//        stereo = getIntent().getExtras().getBoolean("checkbox_stereo");
+//        tennis_table = getIntent().getExtras().getBoolean("checkbox_tennis_table");
 
 
         Services.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +105,7 @@ public class AddChaletActivity extends AppCompatActivity {
 
 //        CategoryName = getIntent().getExtras().get("category").toString();
         ProductImagesRef = FirebaseStorage.getInstance().getReference().child("Chalet Images");
-        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Chalets");
+        ProductsRef = FirebaseDatabase.getInstance().getReference("Sweet App");
 
 
         btn_add = (Button) findViewById(R.id.btn_addchalet);
@@ -120,163 +129,163 @@ public class AddChaletActivity extends AppCompatActivity {
 
 
 
-
-        if (swimming_pool_men == true) {
-
-            SwimmingPoolMen = txtServices1.getText().toString();
-            txtServices1.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SwimmingPoolMen = txtServices1.getText().toString();
-                txtServices1.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (swimming_pool_small == true) {
-
-            SwimmingPoolSmall = txtServices2.getText().toString();
-            txtServices2.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SwimmingPoolSmall = txtServices2.getText().toString();
-                txtServices2.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (stadium == true) {
-
-            Stadium = txtServices3.getText().toString();
-            txtServices3.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Stadium = txtServices3.getText().toString();
-                txtServices3.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-
-
-        if (wifi == true) {
-
-            Wifi = txtServices4.getText().toString();
-            txtServices4.setBackgroundColor(Color.GREEN);
-        }
-
-        txtServices4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Wifi = txtServices4.getText().toString();
-                txtServices4.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (billiard == true) {
-
-            Billiard = txtServices5.getText().toString();
-            txtServices5.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Billiard = txtServices5.getText().toString();
-                txtServices5.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (kitchen == true) {
-
-            Kitchen = txtServices6.getText().toString();
-            txtServices6.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Kitchen = txtServices6.getText().toString();
-                txtServices6.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (garage == true) {
-
-            Garage = txtServices7.getText().toString();
-            txtServices7.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Garage = txtServices7.getText().toString();
-                txtServices7.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (stereo == true) {
-
-            Stereo = txtServices8.getText().toString();
-            txtServices8.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Stereo = txtServices8.getText().toString();
-                txtServices8.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-        if (tennis_table == true) {
-
-            TennisTable = txtServices9.getText().toString();
-            txtServices9.setBackgroundColor(Color.GREEN);
-
-        }
-
-        txtServices9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TennisTable = txtServices9.getText().toString();
-                txtServices9.setBackgroundColor(Color.GREEN);
-
-
-            }
-        });
-
-        arrayList = new ArrayList();
-        arrayList.add(SwimmingPoolMen);
-        arrayList.add(SwimmingPoolSmall);
-        arrayList.add(Kitchen);
-        arrayList.add(Garage);
-        arrayList.add(TennisTable);
-        arrayList.add(Stereo);
-        arrayList.add(Stadium);
-        arrayList.add(Wifi);
-        arrayList.add(Billiard);
+//
+//        if (swimming_pool_men == true) {
+//
+//            SwimmingPoolMen = txtServices1.getText().toString();
+//            txtServices1.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SwimmingPoolMen = txtServices1.getText().toString();
+//                txtServices1.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (swimming_pool_small == true) {
+//
+//            SwimmingPoolSmall = txtServices2.getText().toString();
+//            txtServices2.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SwimmingPoolSmall = txtServices2.getText().toString();
+//                txtServices2.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (stadium == true) {
+//
+//            Stadium = txtServices3.getText().toString();
+//            txtServices3.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Stadium = txtServices3.getText().toString();
+//                txtServices3.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//
+//
+//        if (wifi == true) {
+//
+//            Wifi = txtServices4.getText().toString();
+//            txtServices4.setBackgroundColor(Color.GREEN);
+//        }
+//
+//        txtServices4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Wifi = txtServices4.getText().toString();
+//                txtServices4.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (billiard == true) {
+//
+//            Billiard = txtServices5.getText().toString();
+//            txtServices5.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Billiard = txtServices5.getText().toString();
+//                txtServices5.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (kitchen == true) {
+//
+//            Kitchen = txtServices6.getText().toString();
+//            txtServices6.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Kitchen = txtServices6.getText().toString();
+//                txtServices6.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (garage == true) {
+//
+//            Garage = txtServices7.getText().toString();
+//            txtServices7.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices7.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Garage = txtServices7.getText().toString();
+//                txtServices7.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (stereo == true) {
+//
+//            Stereo = txtServices8.getText().toString();
+//            txtServices8.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices8.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Stereo = txtServices8.getText().toString();
+//                txtServices8.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//        if (tennis_table == true) {
+//
+//            TennisTable = txtServices9.getText().toString();
+//            txtServices9.setBackgroundColor(Color.GREEN);
+//
+//        }
+//
+//        txtServices9.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TennisTable = txtServices9.getText().toString();
+//                txtServices9.setBackgroundColor(Color.GREEN);
+//
+//
+//            }
+//        });
+//
+//        arrayList = new ArrayList();
+//        arrayList.add(SwimmingPoolMen);
+//        arrayList.add(SwimmingPoolSmall);
+//        arrayList.add(Kitchen);
+//        arrayList.add(Garage);
+//        arrayList.add(TennisTable);
+//        arrayList.add(Stereo);
+//        arrayList.add(Stadium);
+//        arrayList.add(Wifi);
+//        arrayList.add(Billiard);
 
 
         loadingBar = new ProgressDialog(this);
@@ -425,9 +434,10 @@ public class AddChaletActivity extends AppCompatActivity {
         ChaletMap.put("price", salary);
         ChaletMap.put("phone", numberisPhone);
         ChaletMap.put("num Of Hours", numOfHours);
-        ChaletMap.put("Services", arrayList);
-
-        ProductsRef.child(chaletRandomKey).updateChildren(ChaletMap)
+//        ChaletMap.put("Services", arrayList);
+//        Bundle extras = getIntent().getExtras();
+//        String Uid = extras.getString("Uid");
+        ProductsRef.child("Users").child("Chalet Owner").child(Uid).child("MyChalte").child(chaletRandomKey).updateChildren(ChaletMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

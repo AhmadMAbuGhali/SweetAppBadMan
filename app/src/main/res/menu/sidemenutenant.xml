@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/main_account_mangment"
+            android:title="إدارة الحساب "
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:visible="true"
+
+            />
+        <item
+            android:id="@+id/main_reservations_list"
+            android:title="قائمة الحجوزات"
+            android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+            android:visible="true"
+            />
+        <item
+            android:id="@+id/main_Favorite_list"
+            android:title="مفضلتي"
+            android:icon="@drawable/ic_baseline_hourglass_empty_24"
+            android:visible="true"
+            />
+
+        <item
+            android:id="@+id/main_logout_option"
+            android:title="تسجيل الخروج "
+            android:visible="true"
+            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            />
+
+    </group>
+</menu>

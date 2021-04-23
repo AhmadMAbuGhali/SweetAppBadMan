@@ -1,4 +1,4 @@
-package com.example.sweetapp.Activity;
+    package com.example.sweetapp.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,10 @@ public class ChaletListActivity extends AppCompatActivity {
     AdapterChaletlistOwner adapterChaletlistOwner;
     DatabaseReference ChaletsRef;
     ArrayList<AdapterIteamChaletList> adapterIteamChaletLists;
+    FirebaseAuth mAuth;
+    AdapterIteamChaletList list;
+
+
 
 
     @Override
@@ -41,6 +46,7 @@ public class ChaletListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chalet_list);
 
         recyclerView = findViewById(R.id.rec_chalitlist);
+        mAuth = FirebaseAuth.getInstance();
 
         btn_EditChalet = findViewById(R.id.btn_EditChalet);
         btn_DeleteChalet = findViewById(R.id.btn_DeleteChalet);
@@ -56,49 +62,18 @@ public class ChaletListActivity extends AppCompatActivity {
 
             }
         });
-        btn_EditChalet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(ChaletListActivity.this, EditChaletActivity.class);
-                startActivity(intent);
 
 
-            }
-        });
-
-
-        btn_DeleteChalet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ChaletsRef.child("Users")
-                        .child("Chalets").child(iteamChaletList.getPid())
-                        .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-
-                            Toast.makeText(ChaletListActivity.this, "تمت عملية حذف الشاليه ", Toast.LENGTH_SHORT).show();
-
-                        }
-
-
-                    }
-                });
-
-
-            }
-        });
-
-
-        ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Chalets");
+        ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Sweet App");
 
 
         ArrayList<AdapterIteamChaletList> models = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        ChaletsRef.addValueEventListener(new ValueEventListener() {
+//        Bundle extras = getIntent().getExtras();
+//        String Uid = extras.getString("Uid");
+String Uid = mAuth.getCurrentUser().getUid();
+        ChaletsRef.child("Users").child("Chalet Owner").child(Uid).child("MyChalte")
+        .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -106,7 +81,7 @@ public class ChaletListActivity extends AppCompatActivity {
                     models.add(iteamChaletList);
 
                 }
-                adapterChaletlistOwner = new AdapterChaletlistOwner(models);
+                adapterChaletlistOwner = new AdapterChaletlistOwner(models,ChaletListActivity.this);
                 recyclerView.setAdapter(adapterChaletlistOwner);
                 adapterChaletlistOwner.setOnItemClickListener(new AdapterChaletlistOwner.OnItemClickListener() {
                     @Override

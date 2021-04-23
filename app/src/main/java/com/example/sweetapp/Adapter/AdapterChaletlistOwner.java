@@ -1,17 +1,27 @@
 package com.example.sweetapp.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sweetapp.Activity.ChaletListActivity;
+import com.example.sweetapp.Activity.EditChaletActivity;
 import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
 import com.example.sweetapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,6 +29,11 @@ import java.util.ArrayList;
 public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletlistOwner.Holder> {
     ArrayList<AdapterIteamChaletList> adapterIteamChaletLists;
     OnItemClickListener onItemClickListener;
+    Context context;
+    DatabaseReference ChaletsRef;
+    AdapterIteamChaletList iteamChaletList;
+
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -28,8 +43,9 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         this.onItemClickListener = onItemClickListener;
     }
 
-    public AdapterChaletlistOwner(ArrayList<AdapterIteamChaletList> adapterIteamChaletLists) {
+    public AdapterChaletlistOwner(ArrayList<AdapterIteamChaletList> adapterIteamChaletLists,Context context) {
         this.adapterIteamChaletLists = adapterIteamChaletLists;
+        this.context = context;
     }
 
     @NonNull
@@ -57,6 +73,42 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         holder.tv_Title_Chalet.setText(A_I_C.getAddress_Chalet());
 
         holder.rb_Evaluation_Chalet.setRating(A_I_C.getEvaluation_Chalet());
+        ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Chalets");
+
+        holder.btn_EditChalet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, EditChaletActivity.class);
+                context.startActivity(intent);
+
+
+            }
+        });
+
+
+
+        holder.btn_DeleteChalet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChaletsRef.child("Users")
+                        .child("Chalets").child(iteamChaletList.getPid())
+                        .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            Toast.makeText(context, "تمت عملية حذف الشاليه ", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                });
+
+            }
+        });
+
 
 
 
@@ -71,6 +123,8 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         ImageView iv_Chalet;
         TextView tv_name_Chalet, tv_Salary, tv_Title_Chalet, tv_Thenumberofhours_Chalet;
         RatingBar rb_Evaluation_Chalet;
+        FloatingActionButton btn_EditChalet, btn_DeleteChalet;
+
 
         public Holder(@NonNull View itemView) {
 
@@ -85,6 +139,8 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
             tv_Thenumberofhours_Chalet = itemView.findViewById(R.id.Thenumberofhours_ChaletList);
 
             rb_Evaluation_Chalet = itemView.findViewById(R.id.ratingBar_Chaletlist);
+            btn_DeleteChalet = itemView.findViewById(R.id.btn_DeleteChalet);
+            btn_EditChalet = itemView.findViewById(R.id.btn_EditChalet);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
