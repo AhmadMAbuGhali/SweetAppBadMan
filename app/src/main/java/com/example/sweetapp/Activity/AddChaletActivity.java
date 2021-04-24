@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,7 +42,7 @@ import java.util.Random;
 public class AddChaletActivity extends AppCompatActivity {
 
     Button Services;
-    private String saveCurrentDate, saveCurrentTime, NameChalet, Address, numberisPhone, salary, numOfHours,Uid, Services1, Services2, Services3, Services4, Services5, Services6, Services7, Services8, Services9;
+    private String saveCurrentDate, saveCurrentTime, NameChalet, Address, numberisPhone, salary, numOfHours,chaletId,uid, Services1, Services2, Services3, Services4, Services5, Services6, Services7, Services8, Services9;
     private static final int GalleryPick = 1;
     private Uri ImageUri;
     private String chaletRandomKey, downloadImageUrl;
@@ -80,6 +81,10 @@ public class AddChaletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_chalet);
         Services = findViewById(R.id.Services);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+         uid = user.getUid();
+         chaletId  =  FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Tasks").push().getKey();
+
 
 
 //        list.setPid(Uid);
@@ -425,28 +430,30 @@ public class AddChaletActivity extends AppCompatActivity {
 
     private void SaveProductInfoToDatabase() {
         HashMap<String, Object> ChaletMap = new HashMap<>();
-        ChaletMap.put("pid", chaletRandomKey);
+        ChaletMap.put("chaletId", chaletId);
         ChaletMap.put("date", saveCurrentDate);
         ChaletMap.put("time", saveCurrentTime);
         ChaletMap.put("name_Chalet", NameChalet);
         ChaletMap.put("image", downloadImageUrl);
         ChaletMap.put("address", Address);
         ChaletMap.put("price", salary);
+        ChaletMap.put("chaletOwnerId", uid);
         ChaletMap.put("phone", numberisPhone);
         ChaletMap.put("num Of Hours", numOfHours);
-//        ChaletMap.put("Services", arrayList);
-//        Bundle extras = getIntent().getExtras();
-//        String Uid = extras.getString("Uid");
-        ProductsRef.child("Users").child("Chalet Owner").child(Uid).child("MyChalte").child(chaletRandomKey).updateChildren(ChaletMap)
+        FirebaseUser user = mAuth.getCurrentUser();
+         uid = user.getUid();
+        ProductsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte").child(chaletId).updateChildren(ChaletMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(AddChaletActivity.this, DetailsChaletOwnerActivity.class);
-                            startActivity(intent);
+                            Intent idToList = new Intent(AddChaletActivity.this, ChaletListActivity.class);
+                            idToList.putExtra("chaletId",chaletId);
+                            startActivity(idToList);
 
                             loadingBar.dismiss();
                             Toast.makeText(AddChaletActivity.this, "Chalet is added successfully..", Toast.LENGTH_SHORT).show();
+
                         } else {
                             loadingBar.dismiss();
                             String message = task.getException().toString();

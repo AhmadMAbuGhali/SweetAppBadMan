@@ -94,8 +94,8 @@ public class ChaletOwnerSingupActivity extends AppCompatActivity {
                     Uid = mAuth.getCurrentUser().getUid();
                     Intent idIntent = new Intent(ChaletOwnerSingupActivity.this, ChaletListActivity.class);
                     Intent idaddIntent = new Intent(ChaletOwnerSingupActivity.this, AddChaletActivity.class);
-                    idIntent.putExtra("UId",Uid);
-                    idaddIntent.putExtra("UId",Uid);
+                    idIntent.putExtra("Uid",Uid);
+                    idaddIntent.putExtra("Uid",Uid);
                     finish();
                     HashMap userDetails =new HashMap();
                     userDetails.put("Uid",Uid);

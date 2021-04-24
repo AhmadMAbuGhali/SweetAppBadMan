@@ -13,10 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.sweetapp.Activity.ChaletListActivity;
 import com.example.sweetapp.Activity.EditChaletActivity;
 import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
 import com.example.sweetapp.R;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,7 +34,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
     Context context;
     DatabaseReference ChaletsRef;
     AdapterIteamChaletList iteamChaletList;
-
+    ViewGroup gg;
 
 
     public interface OnItemClickListener {
@@ -54,7 +56,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chaletlist_item, null, false);
         Holder holder = new Holder(v);
-
+         gg = parent;
 
         return holder;
     }
@@ -64,7 +66,8 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         AdapterIteamChaletList A_I_C=adapterIteamChaletLists.get(position);
 
 //        holder.iv_Chalet.setImageResource(A_I_C.getImg_Chalet());
-        Picasso.get().load(A_I_C.getImg_Chalet()).into( holder.iv_Chalet);
+//     Picasso.get().load(A_I_C.getImg_Chalet()).into( holder.iv_Chalet);
+
 
         holder.tv_name_Chalet.setText(A_I_C.getName_Chalet());
 
@@ -72,8 +75,8 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         holder.tv_Thenumberofhours_Chalet.setText(A_I_C.getNumOfHours());
         holder.tv_Title_Chalet.setText(A_I_C.getAddress_Chalet());
 
-        holder.rb_Evaluation_Chalet.setRating(A_I_C.getEvaluation_Chalet());
-        ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Chalets");
+//        holder.rb_Evaluation_Chalet.setRating(A_I_C.getEvaluation_Chalet());
+        ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Sweet App");
 
         holder.btn_EditChalet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +95,10 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
             @Override
             public void onClick(View v) {
                 ChaletsRef.child("Users")
-                        .child("Chalets").child(iteamChaletList.getPid())
+                        .child("Chalet Owner")
+                        .child(A_I_C.getChaletOwnerId())
+                        .child("MyChalte")
+                        .child(A_I_C.getChaletId())
                         .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

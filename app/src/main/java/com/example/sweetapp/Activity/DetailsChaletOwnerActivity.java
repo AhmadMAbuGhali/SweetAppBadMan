@@ -12,6 +12,7 @@ import com.example.sweetapp.Adapter.AdapterChaletlistOwner;
 import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
 import com.example.sweetapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +27,7 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     TextView txt_name_details,txt_address_details,txt_numberisPhone_details,
             txt_salary_details,txt_numOfHours_details;
-    String Uid;
+    String chaletId,uid;
 
 
     @Override
@@ -35,7 +36,8 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_chalet_owner);
         mAuth = FirebaseAuth.getInstance();
 
-        Uid = mAuth.getCurrentUser().getUid();
+        FirebaseUser user = mAuth.getCurrentUser();
+        uid = user.getUid();
         iv_details=findViewById(R.id.image_detalis);
         txt_name_details=findViewById(R.id.name_details);
         txt_address_details=findViewById(R.id.address_details);
@@ -44,9 +46,10 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
         txt_numOfHours_details=findViewById(R.id.txt_numOfHours_details);
 
 
+
 //        productsId = getIntent().getExtras().getString("Pid");
 
-        getProductsDetails(Uid);
+        getProductsDetails(uid);
 
 
 
@@ -57,11 +60,11 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
 
 
     }
-    private void getProductsDetails(String Uid)
+    private void getProductsDetails(String uid)
     {
 
         DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference("Sweet App");
-        ProductsRef.child("Users").child("Chalet Owner").child(Uid).child("MyChalte").addValueEventListener(new ValueEventListener() {
+        ProductsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte").child(chaletId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -72,7 +75,7 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
                     txt_numberisPhone_details.setText(products.getNumofphone());
                     txt_numOfHours_details.setText(products.getNumOfHours());
                     Picasso.get().load(products.getImg_Chalet()).into(iv_details);
-                    Toast.makeText(DetailsChaletOwnerActivity.this, "Pid: "+list.getPid(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsChaletOwnerActivity.this, "Pid: "+list.getChaletId(), Toast.LENGTH_SHORT).show();
 
                 }
             }

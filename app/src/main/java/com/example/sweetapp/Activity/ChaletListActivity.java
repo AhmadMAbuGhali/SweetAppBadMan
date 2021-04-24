@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,7 @@ public class ChaletListActivity extends AppCompatActivity {
     ArrayList<AdapterIteamChaletList> adapterIteamChaletLists;
     FirebaseAuth mAuth;
     AdapterIteamChaletList list;
+     private  String chaletId,uid;
 
 
 
@@ -47,10 +49,11 @@ public class ChaletListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rec_chalitlist);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        uid = user.getUid();
 
         btn_EditChalet = findViewById(R.id.btn_EditChalet);
         btn_DeleteChalet = findViewById(R.id.btn_DeleteChalet);
-
         AddChalet = findViewById(R.id.AddChalet);
         AddChalet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,8 +74,8 @@ public class ChaletListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        Bundle extras = getIntent().getExtras();
 //        String Uid = extras.getString("Uid");
-String Uid = mAuth.getCurrentUser().getUid();
-        ChaletsRef.child("Users").child("Chalet Owner").child(Uid).child("MyChalte")
+//        chaletId = getIntent().getExtras().getString("chaletId");
+        ChaletsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte")
         .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -88,7 +91,7 @@ String Uid = mAuth.getCurrentUser().getUid();
                     public void onItemClick(int position) {
                         Toast.makeText(ChaletListActivity.this, "" + position, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ChaletListActivity.this, DetailsChaletOwnerActivity.class);
-                        intent.putExtra("Pid", models.get(position).getPid() + "");
+                        intent.putExtra("Pid", models.get(position).getChaletId() + "");
                         startActivity(intent);
                     }
                 });
