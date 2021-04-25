@@ -5,19 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
+import com.example.sweetapp.Model.ChaletListIteamModel;
 import com.example.sweetapp.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Random;
 
 
 public class AddChaletActivity extends AppCompatActivity {
@@ -50,7 +47,7 @@ public class AddChaletActivity extends AppCompatActivity {
     private DatabaseReference ProductsRef;
     private ProgressDialog loadingBar;
     FirebaseAuth mAuth;
-    AdapterIteamChaletList list;
+    ChaletListIteamModel list;
 
 
 
@@ -442,7 +439,7 @@ public class AddChaletActivity extends AppCompatActivity {
         ChaletMap.put("num Of Hours", numOfHours);
         FirebaseUser user = mAuth.getCurrentUser();
          uid = user.getUid();
-        ProductsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte").child(chaletId).updateChildren(ChaletMap)
+        ProductsRef.child("Chalet").child(chaletId).child("Details").updateChildren(ChaletMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

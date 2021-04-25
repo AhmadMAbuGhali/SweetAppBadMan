@@ -1,6 +1,6 @@
-package com.example.sweetapp.Adapter_Iteam;
+package com.example.sweetapp.Model;
 
-public class AdapterIteamChaletList {
+public class ChaletListIteamModel {
 private int img_Chalet;
 private String chaletId, name_Chalet ,Salary, address_Chalet, numOfHours,numofphone,chaletOwnerId;
 private Float Evaluation_Chalet;
@@ -8,7 +8,7 @@ private Float Evaluation_Chalet;
 
 
 
-    public AdapterIteamChaletList(int img_Chalet, String chaletId, String name_Chalet, String salary, String address_Chalet, Float evaluation_Chalet, String numOfHours, String numofphone, String chaletOwnerId) {
+    public ChaletListIteamModel(int img_Chalet, String chaletId, String name_Chalet, String salary, String address_Chalet, Float evaluation_Chalet, String numOfHours, String numofphone, String chaletOwnerId) {
             this.chaletId = chaletId;
             this.chaletOwnerId = chaletOwnerId;
         this.img_Chalet = img_Chalet;
@@ -35,7 +35,7 @@ private Float Evaluation_Chalet;
     public void setChaletOwnerId(String chaletOwnerId) {
         this.chaletOwnerId = chaletOwnerId;
     }
-    public AdapterIteamChaletList() {
+    public ChaletListIteamModel() {
     }
 
     public String getNumofphone() {

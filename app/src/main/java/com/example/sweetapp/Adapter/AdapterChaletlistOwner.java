@@ -13,27 +13,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.sweetapp.Activity.ChaletListActivity;
 import com.example.sweetapp.Activity.EditChaletActivity;
-import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
+import com.example.sweetapp.Model.ChaletListIteamModel;
 import com.example.sweetapp.R;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletlistOwner.Holder> {
-    ArrayList<AdapterIteamChaletList> adapterIteamChaletLists;
+    ArrayList<ChaletListIteamModel> adapterIteamChaletLists;
     OnItemClickListener onItemClickListener;
     Context context;
     DatabaseReference ChaletsRef;
-    AdapterIteamChaletList iteamChaletList;
+    AdapterChaletlistOwner adapter;
     ViewGroup gg;
 
 
@@ -45,7 +41,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         this.onItemClickListener = onItemClickListener;
     }
 
-    public AdapterChaletlistOwner(ArrayList<AdapterIteamChaletList> adapterIteamChaletLists,Context context) {
+    public AdapterChaletlistOwner(ArrayList<ChaletListIteamModel> adapterIteamChaletLists, Context context) {
         this.adapterIteamChaletLists = adapterIteamChaletLists;
         this.context = context;
     }
@@ -63,14 +59,13 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        AdapterIteamChaletList A_I_C=adapterIteamChaletLists.get(position);
+        ChaletListIteamModel A_I_C=adapterIteamChaletLists.get(position);
 
 //        holder.iv_Chalet.setImageResource(A_I_C.getImg_Chalet());
 //     Picasso.get().load(A_I_C.getImg_Chalet()).into( holder.iv_Chalet);
 
 
         holder.tv_name_Chalet.setText(A_I_C.getName_Chalet());
-
         holder.tv_Salary.setText(A_I_C.getSalary());
         holder.tv_Thenumberofhours_Chalet.setText(A_I_C.getNumOfHours());
         holder.tv_Title_Chalet.setText(A_I_C.getAddress_Chalet());
@@ -94,10 +89,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
         holder.btn_DeleteChalet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChaletsRef.child("Users")
-                        .child("Chalet Owner")
-                        .child(A_I_C.getChaletOwnerId())
-                        .child("MyChalte")
+                ChaletsRef.child("Chalet")
                         .child(A_I_C.getChaletId())
                         .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -105,7 +97,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
                         if (task.isSuccessful()) {
 
                             Toast.makeText(context, "تمت عملية حذف الشاليه ", Toast.LENGTH_SHORT).show();
-
+                            task.notifyAll();
                         }
 
 

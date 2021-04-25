@@ -3,13 +3,13 @@ package com.example.sweetapp.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sweetapp.Adapter.AdapterChaletlistOwner;
-import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
+import com.example.sweetapp.Model.ChaletListIteamModel;
 import com.example.sweetapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso;
 
 public class DetailsChaletOwnerActivity extends AppCompatActivity {
     String productsId;
-    AdapterIteamChaletList list;
+    ChaletListIteamModel list;
     ImageView iv_details;
     FirebaseAuth mAuth;
     TextView txt_name_details,txt_address_details,txt_numberisPhone_details,
@@ -46,10 +46,11 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
         txt_numOfHours_details=findViewById(R.id.txt_numOfHours_details);
 
 
+        Intent intent = getIntent();
+        chaletId = intent.getStringExtra("chaletId");
+//        NameChalet = getIntent().getExtras().getString("NameChalet");
 
-//        productsId = getIntent().getExtras().getString("Pid");
-
-        getProductsDetails(uid);
+        getProductsDetails(chaletId);
 
 
 
@@ -60,15 +61,15 @@ public class DetailsChaletOwnerActivity extends AppCompatActivity {
 
 
     }
-    private void getProductsDetails(String uid)
+    private void getProductsDetails(String chaletId)
     {
 
         DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference("Sweet App");
-        ProductsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte").child(chaletId).addValueEventListener(new ValueEventListener() {
+        ProductsRef.child("Chalet").child(chaletId).child("Details").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    AdapterIteamChaletList products = snapshot.getValue(AdapterIteamChaletList.class);
+                    ChaletListIteamModel products = snapshot.getValue(ChaletListIteamModel.class);
                     txt_name_details.setText(products.getName_Chalet());
                     txt_salary_details.setText(products.getSalary());
                     txt_address_details.setText(products.getAddress_Chalet());

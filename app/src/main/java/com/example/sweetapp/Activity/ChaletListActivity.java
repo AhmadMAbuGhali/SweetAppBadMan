@@ -8,16 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sweetapp.Adapter.AdapterChaletlistOwner;
-import com.example.sweetapp.Adapter_Iteam.AdapterIteamChaletList;
+import com.example.sweetapp.Model.ChaletListIteamModel;
 import com.example.sweetapp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,13 +27,13 @@ import java.util.ArrayList;
 public class ChaletListActivity extends AppCompatActivity {
     FloatingActionButton AddChalet, btn_EditChalet, btn_DeleteChalet;
     RecyclerView recyclerView;
-    AdapterIteamChaletList iteamChaletList;
+    ChaletListIteamModel iteamChaletList;
     AdapterChaletlistOwner adapterChaletlistOwner;
     DatabaseReference ChaletsRef;
-    ArrayList<AdapterIteamChaletList> adapterIteamChaletLists;
+    ArrayList<ChaletListIteamModel> adapterIteamChaletLists;
     FirebaseAuth mAuth;
-    AdapterIteamChaletList list;
-     private  String chaletId,uid;
+    ChaletListIteamModel list;
+     private  String NameChalet,uid,chaletId;
 
 
 
@@ -70,28 +66,40 @@ public class ChaletListActivity extends AppCompatActivity {
         ChaletsRef = FirebaseDatabase.getInstance().getReference().child("Sweet App");
 
 
-        ArrayList<AdapterIteamChaletList> models = new ArrayList<>();
+        ArrayList<ChaletListIteamModel> models = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        Bundle extras = getIntent().getExtras();
 //        String Uid = extras.getString("Uid");
-//        chaletId = getIntent().getExtras().getString("chaletId");
-        ChaletsRef.child("Users").child("Chalet Owner").child(uid).child("MyChalte")
+        Intent intent = getIntent();
+        chaletId = intent.getStringExtra("chaletId");
+//        NameChalet = getIntent().getExtras().getString("NameChalet");
+        ChaletsRef.child("Chalet")
         .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    iteamChaletList = snapshot.getValue(AdapterIteamChaletList.class);
+                    iteamChaletList = snapshot.getValue(ChaletListIteamModel.class);
                     models.add(iteamChaletList);
+//                    ChaletListIteamModel products = snapshot.getValue(ChaletListIteamModel.class);
+//                    ChaletListIteamModel model = new ChaletListIteamModel();
+//                    model.setName_Chalet(iteamChaletList.getName_Chalet());
+//                    model.setSalary("1000");
+//                    model.setName_Chalet(iteamChaletList.getName_Chalet());
+//                    model.setName_Chalet(iteamChaletList.getName_Chalet());
+
 
                 }
                 adapterChaletlistOwner = new AdapterChaletlistOwner(models,ChaletListActivity.this);
                 recyclerView.setAdapter(adapterChaletlistOwner);
+                adapterChaletlistOwner.notifyDataSetChanged();
+
                 adapterChaletlistOwner.setOnItemClickListener(new AdapterChaletlistOwner.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
                         Toast.makeText(ChaletListActivity.this, "" + position, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ChaletListActivity.this, DetailsChaletOwnerActivity.class);
-                        intent.putExtra("Pid", models.get(position).getChaletId() + "");
+                        intent.putExtra("chaletId", models.get(position).getChaletId() + "");
+//                        intent.putExtra("NameChalet", models.get(position).getName_Chalet() + "");
                         startActivity(intent);
                     }
                 });
