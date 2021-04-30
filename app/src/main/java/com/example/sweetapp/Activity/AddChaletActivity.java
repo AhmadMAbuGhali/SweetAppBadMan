@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sweetapp.Adapter.AdapterChaletlistOwner;
 import com.example.sweetapp.Model.ChaletListIteamModel;
 import com.example.sweetapp.R;
 import com.google.android.gms.tasks.Continuation;
@@ -439,14 +440,20 @@ public class AddChaletActivity extends AppCompatActivity {
         ChaletMap.put("num Of Hours", numOfHours);
         FirebaseUser user = mAuth.getCurrentUser();
          uid = user.getUid();
-        ProductsRef.child("Chalet").child(chaletId).child("Details").updateChildren(ChaletMap)
+
+       // list = new ChaletListIteamModel(downloadImageUrl ,  chaletId, NameChalet,  salary,  Address,2.5f,  numOfHours,  numberisPhone,  uid);
+        list.setChaletId(chaletId);
+    ProductsRef.child("Chalet").child(chaletId).child("Details").updateChildren(ChaletMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Intent idToList = new Intent(AddChaletActivity.this, ChaletListActivity.class);
+                            Intent idToLModel = new Intent(AddChaletActivity.this, AdapterChaletlistOwner.class);
                             idToList.putExtra("chaletId",chaletId);
+                            idToLModel.putExtra("chaletId",chaletId);
                             startActivity(idToList);
+                            startActivity(idToLModel);
 
                             loadingBar.dismiss();
                             Toast.makeText(AddChaletActivity.this, "Chalet is added successfully..", Toast.LENGTH_SHORT).show();

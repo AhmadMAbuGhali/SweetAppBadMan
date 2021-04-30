@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static android.content.Intent.getIntent;
+
 public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletlistOwner.Holder> {
     ArrayList<ChaletListIteamModel> adapterIteamChaletLists;
     OnItemClickListener onItemClickListener;
@@ -31,6 +33,9 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
     DatabaseReference ChaletsRef;
     AdapterChaletlistOwner adapter;
     ViewGroup gg;
+
+
+
 
 
     public interface OnItemClickListener {
@@ -44,6 +49,7 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
     public AdapterChaletlistOwner(ArrayList<ChaletListIteamModel> adapterIteamChaletLists, Context context) {
         this.adapterIteamChaletLists = adapterIteamChaletLists;
         this.context = context;
+
     }
 
     @NonNull
@@ -83,7 +89,6 @@ public class AdapterChaletlistOwner extends RecyclerView.Adapter<AdapterChaletli
 
             }
         });
-
 
 
         holder.btn_DeleteChalet.setOnClickListener(new View.OnClickListener() {

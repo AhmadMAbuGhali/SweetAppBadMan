@@ -1,14 +1,14 @@
 package com.example.sweetapp.Model;
 
 public class ChaletListIteamModel {
-private int img_Chalet;
-private String chaletId, name_Chalet ,Salary, address_Chalet, numOfHours,numofphone,chaletOwnerId;
+
+private String chaletId, name_Chalet ,img_Chalet,Salary, address_Chalet, numOfHours,numofphone,chaletOwnerId;
 private Float Evaluation_Chalet;
 
 
 
 
-    public ChaletListIteamModel(int img_Chalet, String chaletId, String name_Chalet, String salary, String address_Chalet, Float evaluation_Chalet, String numOfHours, String numofphone, String chaletOwnerId) {
+    public ChaletListIteamModel(String img_Chalet, String chaletId, String name_Chalet, String salary, String address_Chalet, Float evaluation_Chalet, String numOfHours, String numofphone, String chaletOwnerId) {
             this.chaletId = chaletId;
             this.chaletOwnerId = chaletOwnerId;
         this.img_Chalet = img_Chalet;
@@ -47,12 +47,11 @@ private Float Evaluation_Chalet;
     }
 
 
-
-    public int getImg_Chalet() {
+    public String getImg_Chalet() {
         return img_Chalet;
     }
 
-    public void setImg_Chalet(int img_Chalet) {
+    public void setImg_Chalet(String img_Chalet) {
         this.img_Chalet = img_Chalet;
     }
 
